@@ -13,7 +13,7 @@ function App() {
     <>
     <h1>Hello React!</h1>
     <p>
-      첫번째 리액트 앱!
+      첫번째 리액트 앱
     </p>
     </>
   );
