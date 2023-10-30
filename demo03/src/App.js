@@ -1,26 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
+import Exam01 from './components/Exam01';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          테스트입니다.
-          <h1>테스트</h1>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-            테스트입니다.
-        </a>
-      </header>
-    </div>
+    <>
+    <h1>각종 React 예제</h1>
+    <hr/>
+    <Exam01/>
+    </>
   );
+  
 }
 
 export default App;
