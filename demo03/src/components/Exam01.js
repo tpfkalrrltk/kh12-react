@@ -21,7 +21,7 @@ function Exam01() {
 
     return (
         <>
-            <h1>첫번째 예제</h1>
+            <h1>첫 번째 예제</h1>
             {/* 데이터를 출력  컨트롤 / 같이누르기*/}
             <h2>number={number}</h2>
             {/* class를 부여할땐 class가 아니라 className이라고 적어야함 */}

@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import Exam01 from './components/Exam01';
+import Exam02 from './components/Exam02';
 
 
 function App() {
@@ -9,6 +10,8 @@ function App() {
     <h1>각종 React 예제</h1>
     <hr/>
     <Exam01/>
+    <hr/>
+    <Exam02/>
     </>
   );
   
