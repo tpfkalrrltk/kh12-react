@@ -26,39 +26,49 @@ const Exam05 = () => {
     return (<>
         <div className="container-fluid">
             <div className="row">
-                <div className="col offset-4">
+                <div className="col offset-5">
                     <h1>성적계산기</h1>
                 </div>
             </div>
             <div className="row mt-4">
-                <div className="col-3 offset-3">
+                <div className="col-3 offset-4">
                     <h3>자바</h3>
                 </div>
-                <div className="col-6">
-                    <input type="number" className="form-control w-50" min={0} max={100} onChange={(e) => setJava(parseInt(e.target.value))}></input>점
+                <div className="col-2">
+                    <input type="number" className="form-control" min={0} max={100} onChange={e => setJava(parseInt(e.target.value))}  ></input>
                 </div>
+                <div className="col-1">
+                    <h3>점</h3>
+                </div>
+
 
             </div>
             <div className="row">
-                <div className="col-3 offset-3">
+                <div className="col-3 offset-4">
                     <h3>데이터베이스</h3>
                 </div>
-                <div className="col-3">
-                    <input type="number" min={0} max={100} onChange={(e) => setData(parseInt(e.target.value))}></input>점
+                <div className="col-2">
+                    <input type="number" className="form-control" min={0} max={100} onChange={e => setData(parseInt(e.target.value))}></input>
+                </div>
+                <div className="col-1">
+                    <h3>점</h3>
                 </div>
 
             </div>
             <div className="row">
-                <div className="col-3 offset-3">
+                <div className="col-3 offset-4">
                     <h3>스프링부트</h3>
                 </div>
-                <div className="col-3">
-                    <input type="number" min={0} max={100} onChange={(e) => setSpring(parseInt(e.target.value))}></input>점
+                <div className="col-2">
+                    <input type="number" className="form-control" min={0} max={100} onChange={e => setSpring(parseInt(e.target.value))}></input>
+                </div>
+                <div className="col-1">
+                    <h3>점</h3>
                 </div>
 
             </div>
             <div className="row mt-4">
-                <div className="col-3 offset-4">
+                <div className="col-3 offset-5">
                     <h3>
                         총점 :  {total}점
                         <br></br>
