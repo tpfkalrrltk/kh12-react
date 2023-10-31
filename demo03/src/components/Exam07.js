@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Exam07 = () => {
 
@@ -10,10 +10,29 @@ const Exam07 = () => {
     });
 
     const [result, setResult] = useState({//검사결과
-        memberId:false,
-        memberPw:false,
-        memberPwRe:false
+        memberId: false,
+        memberPw: false,
+        memberPwRe: false
     });
+    //입력데이터가 변하면 검사결과가 자동으로 계산되도록 처리
+    useEffect(() => {
+        // console.log("member가 변했습니다.")
+
+        //ID 검사
+        const idRegex = /^[a-z][a-z0-9]{7,19}$/;
+        const idMatch = idRegex.test(member.memberId);
+        //PW 검사
+        const pwRegex = /^[A-Za-z0-9!@#$]{8,16}$/;
+        const pwMatch = pwRegex.test(member.memberPw);
+        //PW-RE 검사
+        const pwReMatch = member.memberPw.length > 0 && member.memberPw === member.memberPwRe;
+        setResult({
+            memberId: idMatch,
+            memberPw: pwMatch,
+            memberPwRe: pwReMatch
+        });
+    }, [member]);
+
 
     //객체의 상태를 한 번에 변경하는 함수를 구현
     const changeMember = (e) => {
