@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Modal } from "bootstrap"
 
 const Exam10 = () => {
     const [products, setProducts] = useState([
@@ -15,6 +16,19 @@ const Exam10 = () => {
 
     ]);
     const [backup, setBackup] = useState([]);
+    const [data, setData] = useState({
+        itemName: "",
+        itemPrice: "",
+        itemType: ""
+    })
+
+    const changeData = e => {
+        const newData = {
+            ...data,
+            [e.target.name]: e.target.value
+        }
+        setData(newData);
+    };
 
     //(중요)"시작하자마자 products의 내용을 backup으로 복제(1회)"
     useEffect(() => {
@@ -110,6 +124,8 @@ const Exam10 = () => {
         });
 
         setProducts(newProducts);
+
+
     };
 
     //아이템 삭제
@@ -122,16 +138,73 @@ const Exam10 = () => {
         //백업 삭제
         const newBackup = backup.filter(product => product.itemNo !== target.itemNo);
         setBackup(newBackup);
+    };
+
+    //항목추가
+    // - data에 들어있는 객체를 복사해서 items에 추가
+    // - data는 깨끗하게 정리
+    const addItem = e => {
+
+        const itemNo = products.length == 0 ? 1 : products[products.length - 1].itemNo + 1;
+        //아이템 추가
+        //const newItems = products.concat({...data});
+        const newItems = [
+            ...products,
+            {
+                ...data,
+                edit: false,
+                itemNo: itemNo
+            }
+        ];
+        setProducts(newItems);
+
+        //백업 추가
+        const newBackup = [
+            ...products,
+            {
+                ...data,
+                edit: false,
+                itemNo: itemNo
+            }
+        ];
+        setBackup(newBackup);
+
+
+        //입력창 초기화
+        setData({
+            itemName: "",
+            itemPrice: "",
+            itemType: ""
+        });
+
+        //모달 닫기
+        closeModal();
+
+    };
+
+    //모달 여는 함수
+    const openModal = () => {
+        var modal = new Modal(document.querySelector("#exampleModal"));
+        modal.show();
+    };
+    //모달 닫는 함수
+    const closeModal = () => {
+        var modal = Modal.getInstance(document.querySelector("#exampleModal"));
+        modal.hide();
     }
 
     return (
-        <div className="container" key={products.itemNo}>
+
+        <div className="container-fluid" key={products.itemNo}>
             <h1 className="text-center mb-4 p-4 bg-black text-light"> 상품 목록</h1>
-            <div className="row mb-3 ">
-                <div className="col-2 offset-1 ">
-                    <button className="btn btn-primary btn-lg w-100">추가</button>
+
+            <div className="row">
+                <div className="col-3 offset-1">
+                    <button className="btn btn-primary btn-lg w-100 mb-3" onClick={openModal}>신규등록</button>
                 </div>
             </div>
+
+
 
             <table className="row table table-hover">
                 <tr className="col table-primary">
@@ -146,26 +219,26 @@ const Exam10 = () => {
                 </tr>
 
                 {products.map((product, index) => (
-                    product.edit ? (
+                    product.edit ? (<div className="row mb-1 text-center">
                         <tr className="table-light ">
-                            <div className="row mb-1 text-center">
-                                <td className="col-1 offset-1" > {index}</td>
-                                <td className="col-2">{product.itemNo}</td>
-                                <td className="col-3"> <input type="text" name="itemName" className="form-control" value={product.itemName} size={7}
-                                    onChange={e => changeItem(product, e)} /></td>
-                                <td className="col-2">
-                                    <input type="text" className="form-control" name="itemPrice" value={product.itemPrice} size={5}
-                                        onChange={e => changeItem(product, e)} />
-                                </td>
-                                <td className="col-2"><input type="text" name="itemType" className="form-control" value={product.itemType} size={5}
-                                    onChange={e => changeItem(product, e)} /></td>
-                                <td className="col-1">
-                                    <button className="btn btn-sm btn-secondary" onClick={e => cancelItem(product)}>취소</button>
-                                    <button className="btn btn-sm btn-success ms-1" onClick={e => saveItem(product)}>완료</button>
-                                </td>
 
-                            </div>
+                            <td className="col-1 offset-1" > {index}</td>
+                            <td className="col-2">{product.itemNo}</td>
+                            <td className="col-3"> <input type="text" name="itemName" className="form-control" value={product.itemName} size={7}
+                                onChange={e => changeItem(product, e)} /></td>
+                            <td className="col-2">
+                                <input type="text" className="form-control" name="itemPrice" value={product.itemPrice} size={5}
+                                    onChange={e => changeItem(product, e)} />
+                            </td>
+                            <td className="col-2"><input type="text" name="itemType" className="form-control" value={product.itemType} size={5}
+                                onChange={e => changeItem(product, e)} /></td>
+                            <td className="col-1">
+                                <button className="btn btn-sm btn-secondary" onClick={e => cancelItem(product)}>취소</button>
+                                <button className="btn btn-sm btn-success ms-1" onClick={e => saveItem(product)}>완료</button>
+                            </td>
                         </tr>
+                    </div>
+
                     ) : (
                         <tr className="table-light ">
                             <div className="row mb-1 text-center">
@@ -185,6 +258,41 @@ const Exam10 = () => {
                 ))}
 
             </table >
+
+
+            {/* Modal */}
+            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">상품 등록</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body container">
+                            <div className="row">
+                                <div className="col-12 m-2">
+                                    <span>상품 이름 : </span>
+                                    <input name="itemName" value={data.itemName} onChange={changeData} />
+                                </div>
+                                <div className="col-12 m-2">
+                                    <span>상품 가격 : </span>
+                                    <input name="itemPrice" value={data.itemPrice} onChange={changeData} />
+                                </div>
+                                <div className="col-12 m-2">
+                                    <span>상품 타입 : </span>
+                                    <input name="itemType" value={data.itemType} onChange={changeData} />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                            <button type="button" className="btn btn-primary" onClick={addItem}>추가</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div >
     )
 }
