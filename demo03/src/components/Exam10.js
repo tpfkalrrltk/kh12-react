@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const Exam10 = () => {
     const [products, setProducts] = useState([
@@ -14,12 +14,24 @@ const Exam10 = () => {
         { itemNo: 10, itemName: "하리보젤리", itemPrice: 5500, itemType: "식품", edit: false },
 
     ]);
+    const [backup, setBackup] = useState([]);
+
+    //(중요)"시작하자마자 products의 내용을 backup으로 복제(1회)"
+    useEffect(() => {
+        setBackup(products.map(products => {
+            const newProducts = { ...products };
+            return newProducts;
+        }));
+
+    }, []);
 
     //  줄을 수정상태로 변경하는 함수
     // - 이 함수를 실행하려면 최소한 itemNo는 알아야 한다.
     // - 함수를 호출할 때 이벤트 정보(e) 대신 아이템정보(product)을 전달하여 처리하도록 처리
     const changeToEdit = (target) => {
         //console.log(target)
+
+
 
         const newProducts = products.map(product => {
             if (product.itemNo === target.itemNo) {//target과 같은 번호의 상품 만큼은
@@ -38,7 +50,7 @@ const Exam10 = () => {
     // - 어떤아이템인지(target)와 뭐라고 입력했는지(e)를 알아야한다.
     const changeItem = (target, e) => {
         const newProducts = products.map(product => {
-         
+
             if (product.itemNo === target.itemNo) {//같은 번호를 발견한다면
 
                 return {
@@ -49,6 +61,54 @@ const Exam10 = () => {
 
             return product;
         });
+        setProducts(newProducts);
+    };
+
+    //취소버튼을 누르면 실행할 함수
+    // -backup에 들어있는 target과 번호가 같은 데이터를 products의 target과 같은 번호에 덮어쓰기
+    const cancelItem = (target) => {
+
+        //backup에서 target의 번호에 해당하는 객체를 찾는다(filter)
+        const findResult = backup.filter(product => product.itemNo === target.itemNo);
+        //console.log(findResult[0]);
+
+        const newProducts = products.map(product => {
+            if (product.itemNo === target.itemNo) {//target과 같은 번호의 상품 만큼은
+                return {
+                    ...findResult[0],//다른건 backup데이터로 두고
+                    edit: false//edit를 false로 바꿔라
+                };
+            }
+            return product;//나머진 현상유지
+        });
+
+        setProducts(newProducts);
+    };
+
+    const saveItem = (target) => {
+
+        //백업 데이터 중 target과 번호가 같은 데이터를 갱신
+        const newBackup = backup.map(product => {
+            if (product.itemNo === target.itemNo) {//target과 같은 번호의 상품 만큼은
+                return {
+                    ...target,//다른건 그대로 둬도
+                    edit: false//edit를 false로 바꿔라
+                };
+            }
+            return product;//나머진 현상유지
+        });
+        setBackup(newBackup);
+
+        const newProducts = products.map(product => {
+            if (product.itemNo === target.itemNo) {//target과 같은 번호의 상품 만큼은
+                return {
+                    ...product,//다른건 그대로 둬도
+                    edit: false//edit를 false로 바꿔라
+                };
+            }
+            return product;//나머진 현상유지
+        });
+
         setProducts(newProducts);
     };
 
@@ -88,8 +148,8 @@ const Exam10 = () => {
                                 <td className="col-2"><input type="text" name="itemType" className="form-control" value={product.itemType} size={5}
                                     onChange={e => changeItem(product, e)} /></td>
                                 <td className="col-1">
-                                    <button className="btn btn-sm btn-secondary">취소</button>
-                                    <button className="btn btn-sm btn-success ms-1">완료</button>
+                                    <button className="btn btn-sm btn-secondary" onClick={e => cancelItem(product)}>취소</button>
+                                    <button className="btn btn-sm btn-success ms-1" onClick={e => saveItem(product)}>완료</button>
                                 </td>
 
                             </div>
