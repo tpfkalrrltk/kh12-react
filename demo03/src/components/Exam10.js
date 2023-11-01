@@ -95,7 +95,7 @@ const Exam10 = () => {
                     edit: false//edit를 false로 바꿔라
                 };
             }
-            return product;//나머진 현상유지
+            return product;//나머진 현상유지수정 완료 및 취소 구현
         });
         setBackup(newBackup);
 
@@ -111,6 +111,18 @@ const Exam10 = () => {
 
         setProducts(newProducts);
     };
+
+    //아이템 삭제
+    // - 배열에서 항목을 삭제할 때도 filter를 사용한다.
+    const deleteItem = (target) => {
+        //아이템 삭제
+        const newProducts = products.filter(product => product.itemNo !== target.itemNo);
+        setProducts(newProducts);
+
+        //백업 삭제
+        const newBackup = backup.filter(product => product.itemNo !== target.itemNo);
+        setBackup(newBackup);
+    }
 
     return (
         <div className="container" key={products.itemNo}>
@@ -164,7 +176,7 @@ const Exam10 = () => {
                                 <td className="col-2">{product.itemType}</td>
                                 <td className="col-1">
                                     <button className="btn btn-sm btn-warning" onClick={e => changeToEdit(product)}>수정</button>
-                                    <button className="btn btn-sm btn-danger ms-1">삭제</button>
+                                    <button className="btn btn-sm btn-danger ms-1" onClick={e => deleteItem(product)}>삭제</button>
                                 </td>
                             </div>
                         </tr >
