@@ -7,29 +7,35 @@ import Exam04 from './components/Exam04';
 import Exam05 from './components/Exam05';
 import Exam06 from './components/Exam06';
 import Exam07 from './components/Exam07';
+import Exam08 from './components/Exam08';
 
 
 function App() {
   return (
     <>
-    <h1>각종 React 예제</h1>
-    <hr/>
-    <Exam01/>
-    <hr/>
-    <Exam02/>
-    <hr/>
-    <Exam03/>
-    <hr/>
-    <Exam04/>
-    <hr/>
-    <Exam05/>
-    <hr/>
-    <Exam06/>
-    <hr/>
-    <Exam07/>
+      <h1>각종 React 예제</h1>
+      <hr />
+      <Exam01 />
+      <hr />
+      <Exam02 />
+      <hr />
+      <Exam03 />
+      <hr />
+      <Exam04 />
+      <hr />
+      <Exam05 />
+      <hr />
+      <Exam06 />
+      <hr />
+      <Exam07 />
+      <hr />
+      <Exam08 />
+
+      <div className='my-5 py-5'></div>
+
     </>
   );
-  
+
 }
 
 export default App;
