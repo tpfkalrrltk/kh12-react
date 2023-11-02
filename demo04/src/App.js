@@ -1,10 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
 import Jubotron from './comporents/Jubotron';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { FaX } from "react-icons/fa6";
 import { BiSolidCreditCard } from "react-icons/bi";
 import { AiFillPlusCircle } from "react-icons/ai";
+import { Modal } from 'bootstrap';
 
 function App() {
 
@@ -22,6 +23,8 @@ function App() {
   //수정을 위한 state
   const [editData, setEditData] = useState("");
 
+  const bsModal = useRef();
+
   //todo 항목 삭제
   const deleteTodoList = (todo) => {
     const newTodoList = todoList.filter(t => t.no !== todo.no);
@@ -31,6 +34,8 @@ function App() {
   const editTodoList = (todo) => {
     //setEditData(todo);//안되는 코드(얇은 복사, deep copy)
     setEditData({ ...todo });//가능한 코드(깊은 복사, deep copy)
+
+    openModal();
   }
   const changeData = (e) => {
     setData({
@@ -68,6 +73,36 @@ function App() {
     });
   };
 
+  const clearEditData = () => {
+    setEditData({ title: "", type: "" });
+    closeModal();
+  }
+
+  const saveTodoList = () => {
+    //editData의 내용을 todoList에 반영하고 초기화
+    const newTodoList = todoList.map(t => {
+      if (t.no === editData.no) {
+        return {
+          ...editData
+        }
+      }
+      return t;
+    });
+
+    setTodoList(newTodoList);
+    clearEditData();
+    closeModal();
+  }
+
+  //Modal 제어 함수
+  const openModal = () => {
+    const modal = new Modal(bsModal.current);
+    modal.show();
+  }
+  const closeModal = () => {
+    const modal = Modal.getInstance(bsModal.current);
+    modal.hide();
+  }
   return (
     <>
       {/* 점보트론을 만들면서 제목과 내용을 전달 */}
@@ -91,24 +126,7 @@ function App() {
           <button className='btn btn-primary' onClick={addTodoList}><AiFillPlusCircle />추가</button></div>
       </div>
 
-      {/* 수정화면 */}
-      <div className='row mt-4'>
 
-        <div className='col-6'>
-          <input type='text' name='title' value={editData.title} onChange={changeEditData} />
-        </div>
-
-        <div className='col-3'>
-          <select type='text' name='type' value={editData.type} onChange={changeEditData}>
-            <option>공부</option>
-            <option>운동</option>
-            <option>일상</option>
-            <option>약속</option>
-            <option>취미</option>
-          </select>
-        </div>
-
-      </div>
 
       {/* 출력 화면 */}
       <div className='row mt-4'>
@@ -125,8 +143,53 @@ function App() {
           </div>
         ))}
 
+        {/* Modal */}
+        <div className="modal fade" ref={bsModal} id="exampleModal" tabIndex="-1"
+          data-bs-backdrop="static"
+          aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">일정 변경</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="modal-body container">
 
+                {/* 수정화면 */}
+                <div className='row'>
 
+                  <div className='col-6'
+                  ><label>이름</label>
+                    <input type='text' name='title' className='form-control' value={editData.title} onChange={changeEditData} />
+                  </div>
+
+                  <div className='col-3'>
+                    <label>종류</label>
+                    <select type='text' name='type' className='form-control' value={editData.type} onChange={changeEditData}>
+
+                      <option>공부</option>
+                      <option>운동</option>
+                      <option>일상</option>
+                      <option>약속</option>
+                      <option>취미</option>
+                    </select>
+                  </div>
+                  <div className='col-3'>
+
+                  </div>
+                </div>
+
+              </div>
+              <div className="modal-footer">
+                {/*  자동으로 닫히는 버튼 */}
+                {/* <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">취소</button> */}
+                {/*  수동으로 닫히는 버튼 */}
+                <button className='btn btn-seconary' onClick={clearEditData}>취소</button>
+                <button className='btn btn-success' onClick={saveTodoList}>저장</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
       </div>
