@@ -1,24 +1,46 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { LiaEdit } from "react-icons/lia"
+import { AiFillDelete } from "react-icons/ai"
 
 import "./Book.css"
 
 const Book = (props) => {
     const [BookList, setBookList] = useState([]);
 
-    useEffect(() => {
-        //서버에 있는 도서 정보를 불러와서 state에 반영하는 코드
-
+    const reloadBook = () => {
         axios({
             url: "http://localhost:8080/book/",
             method: "get"
         }).then(response => {
-            window.alert(" 목록 불러오기가 성공했습니다.")
+          //  window.alert(" 목록 불러오기가 성공했습니다.")
             setBookList(response.data);
 
-        }).catch(error => { window.alert("통신 오류 발생")});
+        }).catch(error => { window.alert("통신 오류 발생") });
+    }
+
+
+
+    useEffect(() => {
+        //서버에 있는 도서 정보를 불러와서 state에 반영하는 코드
+        reloadBook();
 
     }, []);
+
+    const deleteBook = (Book) => {
+        const check = window.confirm("삭제할 겁니까?");
+        if (check == false) { return }
+
+        axios({
+            url: `http://localhost:8080/book/${Book.bookId}`,
+            method: "delete"
+        }).then(response => {
+            reloadBook();
+        }).catch(error => {
+
+        })
+    }
+
 
     return (
         <div className="container">
@@ -31,7 +53,7 @@ const Book = (props) => {
             </div>
 
             <div className="row">
-                <div className="col-12">
+                <div className="col -12">
                     <table className="table my-4">
                         <thead>
                             <tr>
@@ -43,10 +65,11 @@ const Book = (props) => {
                                 <th className="pc-only">출판일</th>
                                 <th className="pc-only">페이지수</th>
                                 <th className="pc-only">장르</th>
+                                <th ></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {BookList.map((Book,index) => (
+                            {BookList.map((Book, index) => (
                                 <tr key={Book.bookId}>
                                     <td className="pc-only">{Book.bookId}</td>
                                     <td>{Book.bookTitle}</td>
@@ -56,6 +79,8 @@ const Book = (props) => {
                                     <td className="pc-only">{Book.bookPublicationDate}</td>
                                     <td className="pc-only">{Book.bookPageCount}</td>
                                     <td className="pc-only">{Book.bookGenre}</td>
+                                    <td> <LiaEdit className="text-warning" /></td>
+                                    <td><AiFillDelete className="text-danger" onClick={e => deleteBook(Book)} /></td>
                                 </tr>
                             ))}
 
