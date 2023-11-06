@@ -33,6 +33,7 @@ const Book = (props) => {
 
         axios({
             url: `http://localhost:8080/book/${Book.bookId}`,
+           // url: "http://localhost:8080/book/"+Book.bookId,
             method: "delete"
         }).then(response => {
             reloadBook();
@@ -79,6 +80,7 @@ const Book = (props) => {
                                     <td className="pc-only">{Book.bookPublicationDate}</td>
                                     <td className="pc-only">{Book.bookPageCount}</td>
                                     <td className="pc-only">{Book.bookGenre}</td>
+                                    {/* 아이콘자리 */}
                                     <td> <LiaEdit className="text-warning" /></td>
                                     <td><AiFillDelete className="text-danger" onClick={e => deleteBook(Book)} /></td>
                                 </tr>
