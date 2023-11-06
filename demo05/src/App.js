@@ -7,21 +7,23 @@ import Home from './components/Home';
 import Menu from './components/Menu';
 function App() {
   return (
-    <div className='container-fluid'>
+    <div className='container-fluid my-5 py-5'>
 
       {/* 상단 메뉴영역 */}
-      <Menu/>
-      
+      <Menu />
+
 
 
       {/* 본문영역 */}
-      <div>
-        <Routes>
-          <Route exact path='/' element={<Home />}>홈페이지</Route>
-          <Route path='/pocketmon' element={<Pocketmon />}>포켓</Route>
-          <Route path='/book' element={<Book></Book>}>책</Route>
-        </Routes>
-      </div>
+      <div className='row'>
+        <div className='col-md-8 offset-md-2'>
+          <Routes>
+            <Route exact path='/' element={<Home />}>홈페이지</Route>
+            <Route path='/pocketmon' element={<Pocketmon />}>포켓</Route>
+            <Route path='/book' element={<Book></Book>}>책</Route>
+          </Routes>
+        </div>
+        </div>
 
 
     </div>
