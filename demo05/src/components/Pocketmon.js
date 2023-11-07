@@ -89,6 +89,36 @@ const Pocketmon = (props) => {
             .catch(error => { });
 
     }
+    //포켓몬 수정 창 열기
+    // - target은 수정 버튼을 누른 행의 포켓몬스터 정보
+    // - target의 정보를 pocketmon으로 카피 후 모달열기
+    const editPocketmon = (target) => {
+        setPocketmon({ ...target })
+        openModal();
+
+    }
+
+    //포켓몬 수정 처리
+    const updatePocketmon = () => {
+        //검사 후 차단 처리
+
+        const { no, name, type } = pocketmon;
+        axios({
+            url: `http://localhost:8080/pocketmon/${no}`,
+            method: "put",
+            data: {
+                name: name,
+                type: type
+            }
+
+        })
+            .then(response => {
+                loadPocketmon();
+                closeModal();
+            })
+            .catch(err => { });
+
+    }
 
     return (
         <div className="container">
@@ -129,7 +159,8 @@ const Pocketmon = (props) => {
                                     <td>{pocketmon.name}</td>
                                     <td>{pocketmon.type}</td>
                                     {/* 아이콘자리 */}
-                                    <td> <LiaEdit className="text-warning" />
+                                    <td> <LiaEdit className="text-warning"
+                                        onClick={e => editPocketmon(pocketmon)} />
                                         <AiFillDelete className="text-danger"
                                             onClick={e => deletePocketmon(pocketmon)} /></td>
                                 </tr>
@@ -164,7 +195,9 @@ const Pocketmon = (props) => {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">포켓몬 등록</h5>
+                            <h5 className="modal-title" id="exampleModalLabel">
+                                {pocketmon.no === undefined ? "포켓몬 추가" : `${pocketmon.no}번 포켓몬 수정`}
+                            </h5>
                             <button type="button" className="btn-close border-0 bg-transparent" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body container">
@@ -187,7 +220,11 @@ const Pocketmon = (props) => {
                             {/*  자동으로 닫히는 버튼 */}
                             {/* <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">취소</button> */}
                             {/*  수동으로 닫히는 버튼 */}
-                            <button className="btn btn-primary" onClick={savePoketmon}>저장</button>
+                            {pocketmon.no === undefined ?
+                                <button className="btn btn-primary" onClick={savePoketmon}>저장</button> 
+                                :
+                                <button className="btn btn-success" onClick={updatePocketmon}>수정</button>
+                            }
                             <button className="btn btn-secondary" onClick={closeModal}>닫기</button>
                         </div>
                     </div>
