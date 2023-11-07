@@ -24,9 +24,18 @@ const BookInfinite = () => {
 
     useEffect(() => {
         loadBook();
-    }, [])
+    }, [page])
 
-const
+    const nextPage = () => {
+        setPage(page + 1);//페이지 1증가
+        loadBook();
+    }
+    //개수가 변하면 페이지를 1로, 목록을 모두 지우고 다시 불러와야 한다.
+    useEffect(() => {      
+            setPage(1);
+            setBookList([]);
+        //  loadBook();
+    }, [size])
 
     return (
         <div className="container">
@@ -35,6 +44,17 @@ const
                 <div className="col-6 bg-primary text-secondary rounded">
                     <h1>무한 스크롤 예제</h1>
                     <p>React CRUD 연습 예제</p>
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col-3 offset-9">
+                    <select className="form-control bg-primary" value={size} onChange={e => setSize(e.target.value)}>
+                        <option value="20">20개씩 보기</option>
+                        <option value="30">30개씩 보기</option>
+                        <option value="50">50개씩 보기</option>
+                        <option value="100">100개씩 보기</option>
+                    </select>
                 </div>
             </div>
 
@@ -53,7 +73,7 @@ const
                         <tbody>
                             {bookList.map((book, index) => (
                                 <tr key={book.bookId}>
-                                    <td>{index}</td>
+                                    <td>{index + 1}</td>
                                     <td>{book.bookTitle}</td>
                                     <td>{book.bookAuthor}</td>
                                     <td>{book.bookPublisher}</td>
@@ -64,7 +84,7 @@ const
                     </table>
 
                 </div>
-
+                {/* 더보기버튼 */}
                 <div className="row">
                     <div className="col">
                         <button className="btn btn-primary w-100" onClick={nextPage}>{size}개 더보기</button>
