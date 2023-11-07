@@ -143,7 +143,7 @@ const Pocketmon = (props) => {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="exampleModalLabel">포켓몬 변경</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" className="btn-close border-0 bg-transparent" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body container">
                             {/* 수정화면 */}
