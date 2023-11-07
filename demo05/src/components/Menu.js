@@ -25,6 +25,9 @@ const Menu = () => {
                                 <NavLink className={`nav-link ${location.pathname ==="/Book" ? "active" :""} `} to="/Book">도서</NavLink>
                             </li>
                             <li className="nav-item">
+                                <NavLink className={`nav-link ${location.pathname ==="/BookInfinite" ? "active" :""} `} to="/Book2">도서(무한)</NavLink>
+                            </li>
+                            <li className="nav-item">
                                 <NavLink className="nav-link" to="#">About</NavLink>
                             </li>
                             <li className="nav-item dropdown">

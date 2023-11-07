@@ -11,7 +11,7 @@ const Book = (props) => {
 
     // const reloadBook = () => {
     //     axios({
-    //         url: "http://localhost:8080/book/",
+    //         url: "${process.env.REACT_APP_REST_API_URL}/book/",
     //         method: "get"
     //     }).then(response => {
     //         //  window.alert(" 목록 불러오기가 성공했습니다.")
@@ -20,7 +20,7 @@ const Book = (props) => {
     // }
     const reloadBook = async () => {
         const response = await axios({
-            url: "http://localhost:8080/book/",
+            url: `${process.env.REACT_APP_REST_API_URL}/book/`,
             method: "get"
 
         })
@@ -40,8 +40,8 @@ const Book = (props) => {
         if (check == false) { return }
 
         axios({
-            url: `http://localhost:8080/book/${Book.bookId}`,
-            // url: "http://localhost:8080/book/"+Book.bookId,
+            url: `${process.env.REACT_APP_REST_API_URL}/book/${Book.bookId}`,
+            // url: "${process.env.REACT_APP_REST_API_URL}/book/"+Book.bookId,
             method: "delete"
         }).then(response => {
             reloadBook();
@@ -89,7 +89,7 @@ const Book = (props) => {
     }
     // const addBook = () => {
     //     axios({
-    //         url: "http://localhost:8080/book/",
+    //         url: "${process.env.REACT_APP_REST_API_URL}/book/",
     //         method: "post",
     //         data:book
     //         //data:{...book} 이것도 가능
@@ -107,7 +107,7 @@ const Book = (props) => {
     // - 비동기 작업을 동기화된 코드로 작성할 수 있다.
     const addBook = async () => {
         const response = await axios({
-            url: "http://localhost:8080/book/",
+            url: `${process.env.REACT_APP_REST_API_URL}/book/`,
             method: "post",
             data: book
         });
@@ -128,7 +128,7 @@ const Book = (props) => {
         delete copyBook.bookId;
         axios({
 
-            url:`http://localhost:8080/book/${book.bookId}`,
+            url:`${process.env.REACT_APP_REST_API_URL}/book/${book.bookId}`,
             method: "put",
             data: {...book}
         })
