@@ -54,6 +54,7 @@ const Pocketmon = (props) => {
     const closeModal = () => {
         const modal = Modal.getInstance(bsModal.current);
         modal.hide();
+        clearPocketmon();
     };
 
     //등록과 관련된 state
@@ -61,12 +62,33 @@ const Pocketmon = (props) => {
         name: "",
         type: "",
     });
-    const changePoketmon = (e) => {
+    const changePocketmon = (e) => {
         setPocketmon({
             ...pocketmon,
             [e.target.name]: e.target.value
         });
+
     };
+    const clearPocketmon = () => {
+        setPocketmon({ name: "", type: "" })
+    }
+
+    //axios로 서버에 등록 요청을 보낸 뒤 등록이  성공하면 목록을 갱신하도록 처리
+    const savePoketmon = () => {
+        //입력값 검사 후 차단 코드 추가
+
+        axios({
+            url: "http://localhost:8080/pocketmon/",
+            method: "post",
+            data: pocketmon
+        })
+            .then(response => { //성공했다면
+                loadPocketmon();//목록을 갱신하고
+                closeModal();//모달을 닫아라
+            })
+            .catch(error => { });
+
+    }
 
     return (
         <div className="container">
@@ -142,7 +164,7 @@ const Pocketmon = (props) => {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">포켓몬 변경</h5>
+                            <h5 className="modal-title" id="exampleModalLabel">포켓몬 등록</h5>
                             <button type="button" className="btn-close border-0 bg-transparent" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body container">
@@ -150,14 +172,14 @@ const Pocketmon = (props) => {
                             <div className="row">
                                 <div className="col">
                                     <label className="form-label">이름</label>
-                                    <input type="text" name="name" className="form-control" value={pocketmon.name} onChange={changePoketmon} />
+                                    <input type="text" name="name" className="form-control" value={pocketmon.name} onChange={changePocketmon} />
                                 </div>
                             </div>
 
                             <div className="row">
                                 <div className="col">
                                     <label className="form-label">속성</label>
-                                    <input type="text" name="type" className="form-control" value={pocketmon.type} onChange={changePoketmon} />  </div>
+                                    <input type="text" name="type" className="form-control" value={pocketmon.type} onChange={changePocketmon} />  </div>
                             </div>
 
                         </div>
@@ -165,7 +187,7 @@ const Pocketmon = (props) => {
                             {/*  자동으로 닫히는 버튼 */}
                             {/* <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">취소</button> */}
                             {/*  수동으로 닫히는 버튼 */}
-                            <button className="btn btn-primary" onClick={closeModal}>저장</button>
+                            <button className="btn btn-primary" onClick={savePoketmon}>저장</button>
                             <button className="btn btn-secondary" onClick={closeModal}>닫기</button>
                         </div>
                     </div>
